@@ -1,4 +1,14 @@
 # Align2Act
+[![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?logo=pytorch)](https://pytorch.org/)
+[![CUDA](https://img.shields.io/badge/CUDA-GPU_Acceleration-76B900?logo=nvidia)](https://developer.nvidia.com/cuda-zone)
+[![nuPlan](https://img.shields.io/badge/nuPlan-DevKit-005BBB)](https://github.com/motional/nuplan-devkit)
+[![LLaMA2 Accessory](https://img.shields.io/badge/LLaMA2-Accessory-blueviolet)](https://huggingface.co/meta-llama)
+[![Lightning Studio](https://img.shields.io/badge/Lightning%20Studio-Train%20Faster-e64a19?logo=lightning)](https://lightning.ai/)
+[![HuggingFace](https://img.shields.io/badge/HuggingFace-🤗_Transformers-fcc42d?logo=huggingface)](https://huggingface.co/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen)
+
 ### Instruction-Tuned Models for Human-Aligned Autonomous Driving
 
 ![Visualization](assets/visualization_right.gif)
