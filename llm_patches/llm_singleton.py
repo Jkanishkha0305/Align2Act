@@ -36,10 +36,10 @@ def load_llm_and_args():
     port = get_free_port()
     
     
-    llama_config=''
-    lora_config=''
-    tokenizer_path=''
-    pretrained_path=''
+    llama_config='/teamspace/studios/this_studio/LLaMA2-Accessory/accessory/configs/model/finetune/sg/llamaPeft_normBiasLora.json'
+    lora_config='/teamspace/studios/this_studio/LLaMA2-Accessory/accessory/configs/model/finetune/sg/llamaPeft_normBiasLora.json'
+    tokenizer_path='/teamspace/studios/this_studio/LLaMA2-Accessory/llama-2-7b/tokenizer.model'
+    pretrained_path='/teamspace/studios/this_studio/LLaMA2-Accessory/llama-2-7b/pretrained_path'
     args = LLaMA2Parameters([llama_config, lora_config], tokenizer_path, [pretrained_path])
     args.available_dist_url = f'tcp://127.0.0.1:{port}'
     

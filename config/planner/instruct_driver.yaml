@@ -1,5 +1,5 @@
 llm_planner:
-  _target_: src.planners.instruct_driver.InstructDriver
+  _target_: src.planners.instruct_driver.Align2Act
   _convert_: "all"
 
 

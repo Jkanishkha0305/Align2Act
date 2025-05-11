@@ -34,7 +34,7 @@ def rotate_round_z_axis(points: np.ndarray, angle: float):
     return points @ rotate_mat
 
 
-class InstructDriver(AbstractPlanner):
+class Align2Act(AbstractPlanner):
 
     def __init__(self, torch_module_wrapper):
         self.torch_module_wrapper = torch_module_wrapper
