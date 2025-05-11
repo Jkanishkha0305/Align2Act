@@ -289,9 +289,86 @@ simulation_type=open_loop_boxes # closed_loop_nonreactive_agents closed_loop_rea
 sh ./script/benchmarks_test14-hard.sh $simulation_type
 ```
 
+## Results after Benchmark Tests 
+### test14-hard
+open_loop_boxes
+
+```python
+{   'aggregator_type': 'weighted_average',
+    'log_name': None,
+    'num_scenarios': 7.0,
+    'planner_expert_average_heading_error_within_bound': 0.9490241969626653,
+    'planner_expert_average_l2_error_within_bound': 0.3090423109016055,
+    'planner_expert_final_heading_error_within_bound': 0.920009529746468,
+    'planner_expert_final_l2_error_within_bound': 0.27812476656557045,
+    'planner_miss_rate_within_bound': 0.2857142857142857,
+    'planner_name': 'InstructDriver',
+    'scenario': 'final_score',
+    'scenario_type': 'final_score',
+    'score': 0.2833165956188029
+},
+```
+
+closed_loop_nonreactive_agents
+```python
+{   'aggregator_type': 'weighted_average',
+    'corners_in_drivable_area': None,
+    'drivable_area_compliance': 1.0,
+    'driving_direction_compliance': 1.0,
+    'ego_is_comfortable': 0.5714285714285714,
+    'ego_is_making_progress': 0.2857142857142857,
+    'ego_jerk': None,
+    'ego_lane_change': None,
+    'ego_lat_acceleration': None,
+    'ego_lon_acceleration': None,
+    'ego_lon_jerk': None,
+    'ego_progress_along_expert_route': 0.2903926346289234,
+    'ego_yaw_acceleration': None,
+    'ego_yaw_rate': None,
+    'log_name': None,
+    'no_ego_at_fault_collisions': 1.0,
+    'num_scenarios': 7.0,
+    'planner_name': 'InstructDriver',
+    'scenario': 'final_score',
+    'scenario_type': 'final_score',
+    'score': 0.26785709132867425,
+    'speed_limit_compliance': 0.9971754001104545,
+    'time_to_collision_within_bound': 1.0
+},
+```
+
+closed_loop_reactive_agents
+```python
+{   'aggregator_type': 'weighted_average',
+    'corners_in_drivable_area': None,
+    'drivable_area_compliance': 1.0,
+    'driving_direction_compliance': 1.0,
+    'ego_is_comfortable': 0.5714285714285714,
+    'ego_is_making_progress': 0.2857142857142857,
+    'ego_jerk': None,
+    'ego_lane_change': None,
+    'ego_lat_acceleration': None,
+    'ego_lon_acceleration': None,
+    'ego_lon_jerk': None,
+    'ego_progress_along_expert_route': 0.2903926346289234,
+    'ego_yaw_acceleration': None,
+    'ego_yaw_rate': None,
+    'log_name': None,
+    'no_ego_at_fault_collisions': 1.0,
+    'num_scenarios': 7.0,
+    'planner_name': 'InstructDriver',
+    'scenario': 'final_score',
+    'scenario_type': 'final_score',
+    'score': 0.26785709132867425,
+    'speed_limit_compliance': 0.9971754001104545,
+}
+```
+
 ## Planner Working
 
 <img src="assets/3.png" />
+
+## Visualization
 
 <img src="assets/viz.gif" alt="Visualization" width="300"/>
 
