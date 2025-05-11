@@ -1,13 +1,18 @@
 # Align2Act
-Instruction-Tuned Models for Human-Aligned Autonomous Driving
+### Instruction-Tuned Models for Human-Aligned Autonomous Driving
+
+![Visualization](assets/visualization_right.gif)
+
+![Visualization](assets/visualization_straight.gif)
 
 ## Overview
 
-<img src="assets/overview.jpg" style="zoom: 20%;" />
+<img src="assets/1.png" />
+
 
 Our approach transforms scenario data into textual descriptions and, by setting specific instructions, enables a fine-tuned LLM to generate InstructChain and trajectories that align with human driving behavior. The trajectory is subsequently applied in a simulated environment.
 
-
+<img src="assets/intro.png" />
 
 ## Results
 
@@ -149,6 +154,9 @@ Our approach transforms scenario data into textual descriptions and, by setting 
 </tbody>
 </table>
 
+## Project Workflow
+
+<img src="assets/2.png" />
 
 ## Getting Started
 
@@ -270,6 +278,8 @@ export NUPLAN_MAPS="/teamspace/studios/this_studio/nuplan-devkit/nuplan/dataset/
 export NUPLAN_EXP_ROOT="/teamspace/studios/this_studio/nuplan-devkit/nuplan/exp"     
 ```
 
+
+
 ```shell
 export PYTHONPATH=$(pwd)/nuplan-devkit:$PYTHONPATH
 export PYTHONPATH=$(pwd)/nuplan-devkit/Align2Act:$PYTHONPATH
@@ -278,6 +288,15 @@ cd ./nuplan-devkit/Align2Act
 simulation_type=open_loop_boxes # closed_loop_nonreactive_agents closed_loop_reactive_agents
 sh ./script/benchmarks_test14-hard.sh $simulation_type
 ```
+
+## Planner Working
+
+<img src="assets/3.png" />
+
+<img src="assets/viz.gif" alt="Visualization" width="300"/>
+
+<img src="assets/viz_round.gif" alt="Visualization" width="300"/>
+
 
 ## Acknowledgement
 
