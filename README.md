@@ -11,8 +11,143 @@ Our approach transforms scenario data into textual descriptions and, by setting 
 
 ## Results
 
-<img src="assets/results.png" style="zoom:70%;" />
+### Test14-random and Test14-hard benchmarks
 
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-c3ow" colspan="2">Planners</th>
+    <th class="tg-c3ow" colspan="3">Test14-random</th>
+    <th class="tg-c3ow" colspan="3">Test14-hard</th>
+    <th class="tg-0pky"></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-0pky">Type</td>
+    <td class="tg-0pky">Method</td>
+    <td class="tg-c3ow">OLS</td>
+    <td class="tg-c3ow">NR-CLS</td>
+    <td class="tg-c3ow">R-CLS</td>
+    <td class="tg-c3ow">OLS</td>
+    <td class="tg-c3ow">NR-CLS</td>
+    <td class="tg-c3ow">R-CLS</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Expert</td>
+    <td class="tg-0pky">LogReplay</td>
+    <td class="tg-c3ow">100.0</td>
+    <td class="tg-c3ow">94.03</td>
+    <td class="tg-c3ow">75.86</td>
+    <td class="tg-c3ow">100.0</td>
+    <td class="tg-c3ow">85.96</td>
+    <td class="tg-c3ow">68.80</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" rowspan="2">Rule-based</td>
+    <td class="tg-0pky">IDM</td>
+    <td class="tg-c3ow">34.15</td>
+    <td class="tg-c3ow">70.39</td>
+    <td class="tg-c3ow">72.42</td>
+    <td class="tg-c3ow">20.07</td>
+    <td class="tg-c3ow">56.16</td>
+    <td class="tg-c3ow">62.26</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">PDM-Closed</td>
+    <td class="tg-c3ow">46.32</td>
+    <td class="tg-c3ow">90.05</td>
+    <td class="tg-7btt">91.64</td>
+    <td class="tg-c3ow">26.43</td>
+    <td class="tg-c3ow">65.07</td>
+    <td class="tg-c3ow">75.18</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" rowspan="2">Hybrid</td>
+    <td class="tg-0pky">GameFormer</td>
+    <td class="tg-c3ow">79.35</td>
+    <td class="tg-c3ow">80.80</td>
+    <td class="tg-c3ow">79.31</td>
+    <td class="tg-c3ow">75.27</td>
+    <td class="tg-c3ow">66.59</td>
+    <td class="tg-c3ow">68.83</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">PDM-Hybrid</td>
+    <td class="tg-c3ow">82.21</td>
+    <td class="tg-7btt">90.20</td>
+    <td class="tg-c3ow">91.56</td>
+    <td class="tg-c3ow">73.81</td>
+    <td class="tg-c3ow">65.95</td>
+    <td class="tg-7btt">75.79</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" rowspan="5">Learning-based<br><br></td>
+    <td class="tg-0pky">PlanCNN</td>
+    <td class="tg-c3ow">62.93</td>
+    <td class="tg-c3ow">69.66</td>
+    <td class="tg-c3ow">67.54</td>
+    <td class="tg-c3ow">52.4</td>
+    <td class="tg-c3ow">49.47</td>
+    <td class="tg-c3ow">52.16</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">UrbanDriver <sup></sup></td>
+    <td class="tg-c3ow">82.44</td>
+    <td class="tg-c3ow">63.27</td>
+    <td class="tg-c3ow">61.02</td>
+    <td class="tg-c3ow">76.9</td>
+    <td class="tg-c3ow">51.54</td>
+    <td class="tg-c3ow">49.07</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">GC-PGP</td>
+    <td class="tg-c3ow">77.33</td>
+    <td class="tg-c3ow">55.99</td>
+    <td class="tg-c3ow">51.39</td>
+    <td class="tg-c3ow">73.78</td>
+    <td class="tg-c3ow">43.22</td>
+    <td class="tg-c3ow">39.63</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">PDM-Open</td>
+    <td class="tg-c3ow">84.14</td>
+    <td class="tg-c3ow">52.80</td>
+    <td class="tg-c3ow">57.23</td>
+    <td class="tg-c3ow">79.06</td>
+    <td class="tg-c3ow">33.51</td>
+    <td class="tg-c3ow">35.83</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">PlanTF </td>
+    <td class="tg-7btt">87.07</td>
+    <td class="tg-c3ow">86.48</td>
+    <td class="tg-c3ow">80.59</td>
+    <td class="tg-7btt">83.32</td>
+    <td class="tg-7btt">72.68</td>
+    <td class="tg-c3ow">61.7</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" rowspan="2">LLM-based</td>
+    <td class="tg-0pky">Align2Act (LLaMA2 without Chain) </td>
+    <td class="tg-7btt">61.53</td>
+    <td class="tg-c3ow">46.91</td>
+    <td class="tg-c3ow">42.47</td>
+    <td class="tg-7btt">68.02</td>
+    <td class="tg-7btt">55.14</td>
+    <td class="tg-c3ow">50.31</td>
+  </tr>
+  <tr>
+    <td class="tg-0pky">Align2Act (InstructionChain) </td>
+    <td class="tg-7btt">85.17</td>
+    <td class="tg-c3ow">70.31</td>
+    <td class="tg-c3ow">66.96</td>
+    <td class="tg-7btt">81.12</td>
+    <td class="tg-7btt">57.37</td>
+    <td class="tg-c3ow">52.95</td>
+  </tr>
+</tbody>
+</table>
 
 
 ## Getting Started
@@ -146,5 +281,5 @@ sh ./script/benchmarks_test14-hard.sh $simulation_type
 
 ## Acknowledgement
 
-[nuplan-devkit](https://github.com/motional/nuplan-devkit)   [LLaMA2-Accessory](https://github.com/Alpha-VLLM/LLaMA2-Accessory)   [planTF](https://github.com/jchengai/planTF)
+[nuplan-devkit](https://github.com/motional/nuplan-devkit) |  [LLaMA2-Accessory](https://github.com/Alpha-VLLM/LLaMA2-Accessory) | [planTF](https://github.com/jchengai/planTF)
 
