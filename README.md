@@ -34,7 +34,6 @@ Our approach transforms scenario data into textual descriptions and, by setting 
     <th class="tg-c3ow" colspan="2">Planners</th>
     <th class="tg-c3ow" colspan="3">Test14-random</th>
     <th class="tg-c3ow" colspan="3">Test14-hard</th>
-    <th class="tg-0pky"></th>
   </tr>
 </thead>
 <tbody>
@@ -181,8 +180,8 @@ Follow the [official documentation](https://nuplan-devkit.readthedocs.io/en/late
 - Create an environment using Python 3.10
 
 ```sh
-conda create -n instruct_driver python=3.10
-source activate instruct_driver
+conda create -n align2act python=3.10
+source activate align2act
 ```
 
 - Follow the [official documentation](https://llama2-accessory.readthedocs.io/en/latest/install.html) to set up the LLaMA2-Accessory environment.
