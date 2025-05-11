@@ -26,6 +26,7 @@ import traceback
 from accessory.data.alpaca import format_prompt
 
 
+# Helper function to rotate 2D points around Z-axis by a given angle
 @numba.njit
 def rotate_round_z_axis(points: np.ndarray, angle: float):
     rotate_mat = np.array(
@@ -34,31 +35,30 @@ def rotate_round_z_axis(points: np.ndarray, angle: float):
     return points @ rotate_mat
 
 
+# Main planner class using LLM-based trajectory generation
 class Align2Act(AbstractPlanner):
 
     def __init__(self, torch_module_wrapper):
-        self.torch_module_wrapper = torch_module_wrapper
+        self.torch_module_wrapper = torch_module_wrapper  # Interface to obtain required feature builder
 
         self.output = ''
         self.model = None
         self.args = None
 
-        self.future_horizon = 8
-        self.step_interval = 0.5
+        # Trajectory configuration
+        self.future_horizon = 8  # seconds
+        self.step_interval = 0.5  # seconds between trajectory steps
         self.pose_num = int(self.future_horizon / self.step_interval)
-        # self.future_horizon = self.pose_num * self.step_interval
-        self.motionless_trajectory = [[0.0,0.0,0.0] for _ in range(self.pose_num)]
+        self.motionless_trajectory = [[0.0,0.0,0.0] for _ in range(self.pose_num)]  # Fallback trajectory in case of failure
 
-
+    # Called once to set up model, data util, and planner feature builder
     def initialize(self, initialization: List[PlannerInitialization]) -> None:
-        # model initialization
         from llm_patches.llm_singleton import LLMSingleton
-        self.model, self.args = LLMSingleton.get_llm_and_args()
+        self.model, self.args = LLMSingleton.get_llm_and_args()  # Load LLM model and config
 
-        # data process initialization
-        self.datautil = DataUtil()
+        self.datautil = DataUtil()  # Data processor and formatter
 
-        # simulation initialization
+        # Feature builder for extracting planner features
         self.planner_feature_builder = self.torch_module_wrapper.get_list_of_required_feature()[0]
         self.initialization = initialization
 
@@ -66,21 +66,25 @@ class Align2Act(AbstractPlanner):
         return self.__class__.__name__
     
     def observation_type(self) -> Type[Observation]:
-        return DetectionsTracks  # type: ignore
+        return DetectionsTracks  # Specifies input observation type
 
+    # Core planning function to return trajectory
     def compute_planner_trajectory(self, current_input: PlannerInput) -> List[AbstractTrajectory]:
         ego_history = current_input.history.ego_states
-        ego_state = ego_history[-1]
+        ego_state = ego_history[-1]  # Latest ego state
 
+        # Prepare instruction and feature input for the LLM
         json_instruction = self.datautil.get_instruction()
         feature_data = self.planner_feature_builder.get_features_from_simulation(current_input, self.initialization)
         json_input = self.datautil.get_input_for_iter(self.planner_feature_builder, feature_data, -1)
 
+        # Run generation on master or dummy on worker
         if dist.get_rank() == 0:
             self.master_func(json_instruction, json_input)
         else:
             self.worker_func()
         
+        # Parse LLM output and convert to trajectory
         if len(self.output)!=0:
             output_trajectory_description = self.output
             self.output = ''
@@ -89,29 +93,34 @@ class Align2Act(AbstractPlanner):
                 output_trajectory_list = ast.literal_eval(output_trajectory_str)
                 final_ret_traj = self.list2traj(ego_history, output_trajectory_list)
             except Exception:
+                # In case of error, return motionless fallback
                 return self.list2traj(ego_history, self.motionless_trajectory)
         return final_ret_traj
 
 
+    # Wrapper around model.generate with inference optimizations
     @ torch.inference_mode()
     def generate(self, prompt, question_input, system_prompt, max_gen_len, gen_t, top_p):
         image = None
 
-        # text output
+        # Format input using Alpaca-like prompt
         _prompt = format_prompt({"instruction":prompt, "input":question_input}, system_prompt)
 
+        # Sync and broadcast input across distributed workers
         dist.barrier()
         dist.broadcast_object_list([_prompt, image, max_gen_len, gen_t, top_p])
+
+        # Generate using quantized or AMP mode based on config
         if self.args.quant:
             results = self.model.generate([_prompt], image, max_gen_len=max_gen_len, temperature=gen_t, top_p=top_p)
         else:
             with torch.cuda.amp.autocast(dtype=self.args.target_dtype):
                 results = self.model.generate([_prompt], image, max_gen_len=max_gen_len, temperature=gen_t, top_p=top_p)
-        text_output = results[0].strip()
-        return text_output
-    
-    def worker_func(self):
 
+        return results[0].strip()
+    
+    # Worker simply waits for prompt and calls generate without storing result
+    def worker_func(self):
         while True:
             dist.barrier()
 
@@ -121,21 +130,20 @@ class Align2Act(AbstractPlanner):
             with torch.cuda.amp.autocast(dtype=self.args.target_dtype):
                 _ = self.model.generate([_prompt], image, max_gen_len=max_gen_len, temperature=gen_t, top_p=top_p, )
         
+    # Master node prepares prompt and stores model output
     def master_func(self, json_instruction, json_input):
-
         system_prompt = "alpaca"
         max_gen_len = self.args.max_gen_len
         gen_t = 0.0
         top_p = 0.75
         try:
             output = self.generate(json_instruction, json_input, system_prompt, max_gen_len, gen_t, top_p)
-            # output = self.model.generate(json_instruction, json_input, system_prompt, max_gen_len, gen_t, top_p)
         except:
             output = 'Error'
         
         self.output = output
 
-
+    # Convert local trajectory (relative to ego) to global frame
     @staticmethod
     def to_global(local_trajectory, ego_state):
         origin = ego_state.rear_axle.array
@@ -152,6 +160,7 @@ class Align2Act(AbstractPlanner):
         )
         return global_trajectory
 
+    # Convert list of [x, y, yaw] to InterpolatedTrajectory object
     def list2traj(self, ego_history, input_list):
 
         ego_state = ego_history[-1]
@@ -159,20 +168,19 @@ class Align2Act(AbstractPlanner):
         
         states = [StateSE2.deserialize(pose) for pose in global_trajectory]
 
+        # Derive timepoints, velocity, acceleration
         timesteps = _get_fixed_timesteps(ego_state, len(input_list) * self.step_interval, self.step_interval)
         velocities, accelerations = _get_velocity_and_acceleration(states, ego_history, timesteps)
         output_states = [
             _se2_vel_acc_to_ego_state(state, velocity, acceleration, timestep, ego_state.car_footprint.vehicle_parameters)
             for state, velocity, acceleration, timestep in zip(states, velocities, accelerations, timesteps)
         ]
-        output_states.insert(0, ego_state)
+        output_states.insert(0, ego_state)  # Include current ego state
 
         return InterpolatedTrajectory(output_states)
     
+    # Extract only the trajectory-relevant portion of the LLM's output
     @staticmethod
     def output2traj(output_str):
         match_str = "Trajectory:"
         return output_str[output_str.rfind(match_str) + len(match_str):]
-    
-
-

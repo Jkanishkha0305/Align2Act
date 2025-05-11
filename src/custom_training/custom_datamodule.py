@@ -32,6 +32,9 @@ logger = logging.getLogger(__name__)
 DataModuleNotSetupError = RuntimeError('Data module has not been setup, call "setup()"')
 
 
+# -----------------------------------
+# Helper function to create dataset
+# -----------------------------------
 def create_dataset(
     samples: List[AbstractScenario],
     feature_preprocessor: FeaturePreprocessor,
@@ -60,7 +63,9 @@ def create_dataset(
         augmentors=augmentors,
     )
 
-
+# ----------------------------------------------
+# Function to create distributed weighted sampler
+# ----------------------------------------------
 def distributed_weighted_sampler_init(
     scenario_dataset: ScenarioDataset,
     scenario_sampling_weights: Dict[str, float],
@@ -100,6 +105,9 @@ def distributed_weighted_sampler_init(
     return distributed_weighted_sampler
 
 
+# ---------------------------------------
+# Main CustomDataModule using Lightning
+# ---------------------------------------
 class CustomDataModule(pl.LightningDataModule):
     """
     Datamodule wrapping all preparation and dataset creation functionality.
