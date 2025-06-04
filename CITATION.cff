@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use Align2Act in your research, please cite it."
+type: software
+title: "Align2Act: Instruction-Tuned Models for Human-Aligned Autonomous Driving"
+authors:
+  - family-names: Kanishkha
+    given-names: J.
+    affiliation: "New York University, Toyota"
+repository-code: "https://github.com/Jkanishkha0305/Align2Act"
+keywords:
+  - autonomous-driving
+  - instruction-tuning
+  - large-language-models
+  - nuPlan
+  - LoRA
+  - human-alignment
+license: MIT
